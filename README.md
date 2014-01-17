@@ -61,50 +61,50 @@ API
 
 ### Create/Modify/Delete device
 
-    cloud.setDeviceName(device, name, function(err, device) {
+    cloud.setDeviceName(device, name, function(err, result) {
     });
 
-    cloud.addDevice(device, clientID, name, protocol, model, function(err, device) {
+    cloud.addDevice(device, clientID, name, protocol, model, function(err, result) {
     });
 
-    cloud.setDeviceLearn(device, function(err, device) {
+    cloud.setDeviceLearn(device, function(err, result) {
     });
 
-    cloud.setDeviceModel(device, model, function(err, device) {
+    cloud.setDeviceModel(device, model, function(err, result) {
     });
 
-    cloud.setDeviceName(device, name, function(err, device) {
+    cloud.setDeviceName(device, name, function(err, result) {
     });
 
-    cloud.setDeviceParameter(device, parameter, value, function(err, device) {
+    cloud.setDeviceParameter(device, parameter, value, function(err, result) {
     });
 
-    cloud.setDeviceProtocol(device, protocol, function(err, device) {
+    cloud.setDeviceProtocol(device, protocol, function(err, result) {
     });
 
-    cloud.removeDevice(device, function(err, device) {
+    cloud.removeDevice(device, function(err, result) {
     });
 
 
 
 ### Device actions
 
-    cloud.bellDevice(device, function(err, device) {
+    cloud.bellDevice(device, function(err, result) {
     });
 
-    cloud.commandDevice(device, method, value, function(err, device) {
+    cloud.commandDevice(device, method, value, function(err, result) {
     });
 
-    cloud.dimDevice(device, level, function(err, device) {
+    cloud.dimDevice(device, level, function(err, result) {
     });
 
-    cloud.onOffDevice(device, onP, function(err, device) {
+    cloud.onOffDevice(device, onP, function(err, result) {
     });
 
-    cloud.stopDevice(device, function(err, device) {
+    cloud.stopDevice(device, function(err, result) {
     });
 
-    cloud.upDownDevice(device, upP, function(err, device) {
+    cloud.upDownDevice(device, upP, function(err, result) {
     });
 
 ### Get sensor information
@@ -123,7 +123,7 @@ API
 
 ### Modify sensor
 
-    cloud.setSensorName(sensor, name, function(err, sensor) {
+    cloud.setSensorName(sensor, name, function(err, reuslt) {
     });
 
 
