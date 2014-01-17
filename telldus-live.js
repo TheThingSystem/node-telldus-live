@@ -108,7 +108,7 @@ TelldusAPI.prototype.setDeviceName = function(device, name, callback) {
 };
 
 TelldusAPI.prototype.setDeviceParameter = function(device, parameter, value, callback) {
-  return this.roundtrip('PUT', '/device/setProtocol?' + querystring.stringify({ id        : device.id
+  return this.roundtrip('PUT', '/device/setParameter?' + querystring.stringify({ id        : device.id
                                                                               , parameter : parameter
                                                                               , value     : value }), callback);
 };
@@ -178,6 +178,9 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
       if (!!err) self.logger.error('invoke', { exception: err }); else self.logger.info(path, { results: results });
     };
   }
+
+// my guess is that this isn't REST, hence:
+  method = 'GET';
 
   self.oauth._performSecureRequest(self.token, self.tokenSecret, method, 'https://api.telldus.com/json' + path, null, json,
                                    !!json ? 'application/json' : null, function(err, body, response) {
