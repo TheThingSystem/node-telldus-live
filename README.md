@@ -50,13 +50,61 @@ API
     cloud.getDevices(function(err, devices) {
       if (!!err) return console.log('getDevices: ' + err.message);
 
-      // inspect devices[]
+      // inspect devices[{}]
     });
 
-    cloud.getDeviceInfo(id, function(err, device) {
+    cloud.getDeviceInfo(device, function(err, device) {
       if (!!err) return console.log('getDevice: ' + err.message);
 
       // inspect device{}
+    });
+
+### Create/Modify/Delete device
+
+    cloud.setDeviceName(device, name, function(err, device) {
+    });
+
+    cloud.addDevice(device, clientID, name, protocol, model, function(err, device) {
+    });
+
+    cloud.setDeviceLearn(device, function(err, device) {
+    });
+
+    cloud.setDeviceModel(device, model, function(err, device) {
+    });
+
+    cloud.setDeviceName(device, name, function(err, device) {
+    });
+
+    cloud.setDeviceParameter(device, parameter, value, function(err, device) {
+    });
+
+    cloud.setDeviceProtocol(device, protocol, function(err, device) {
+    });
+
+    cloud.removeDevice(device, function(err, device) {
+    });
+
+
+
+### Device actions
+
+    cloud.bellDevice(device, function(err, device) {
+    });
+
+    cloud.commandDevice(device, method, value, function(err, device) {
+    });
+
+    cloud.dimDevice(device, level, function(err, device) {
+    });
+
+    cloud.onOffDevice(device, onP, function(err, device) {
+    });
+
+    cloud.stopDevice(device, function(err, device) {
+    });
+
+    cloud.upDownDevice(device, upP, function(err, device) {
     });
 
 ### Get sensor information
@@ -64,13 +112,18 @@ API
     cloud.getSensors(function(err, sensors) {
       if (!!err) return console.log('getSensors: ' + err.message);
 
-      // inspect sensors[]
+      // inspect sensors[{}]
     });
 
-    cloud.getSensorInfo(id, function(err, sensor) {
+    cloud.getSensorInfo(sensor, function(err, sensor) {
       if (!!err) return console.log('getSensor: ' + err.message);
 
       // inspect sensor{}
+    });
+
+### Modify sensor
+
+    cloud.setSensorName(sensor, name, function(err, sensor) {
     });
 
 

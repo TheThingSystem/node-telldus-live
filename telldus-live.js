@@ -3,6 +3,7 @@
 
 var events      = require('events')
   , oauth       = require('oauth')
+  , querystring = require('querystring')
   , util        = require('util')
   ;
 
@@ -60,14 +61,15 @@ TelldusAPI.prototype.getSensors = function(callback) {
   });
 };
 
-TelldusAPI.prototype.getSensorInfo = function(id, callback) {
-  return this.roundtrip('GET', '/sensor/info?id=' + id, function(err, results) {
-    if (!!err) return callback(err);
-
-// not sure what is returned here...
-    return callback(null, results);
-  });
+TelldusAPI.prototype.getSensorInfo = function(sensor, callback) {
+  return this.roundtrip('GET', '/sensor/info?' + querystring.stringify(       { id        : sensor.id }), callback);
 };
+
+TelldusAPI.prototype.setSensorName = function(sensor, name, callback) {
+  return this.roundtrip('PUT', '/sensor/setName?' + querystring.stringify(    { id        : sensor.id
+                                                                              , name      : name }), callback);
+};
+
 
 TelldusAPI.prototype.getDevices = function(callback) {
   return this.roundtrip('GET', '/devices/list', function(err, results) {
@@ -78,13 +80,76 @@ TelldusAPI.prototype.getDevices = function(callback) {
   });
 };
 
-TelldusAPI.prototype.getDeviceInfo = function(id, callback) {
-  return this.roundtrip('GET', '/device/info?id=' + id, function(err, results) {
-    if (!!err) return callback(err);
+TelldusAPI.prototype.getDeviceInfo = function(device, callback) {
+  return this.roundtrip('GET', '/device/info?' + querystring.stringify(       { id        : device.id }), callback);
+};
 
-// not sure what is returned here...
-    return callback(null, results);
-  });
+
+TelldusAPI.prototype.addDevice = function(device, clientID, name, protocol, model, callback) {
+  return this.roundtrip('POST', '/device/setName?' + querystring.stringify(   { id        : device.id
+                                                                              , name      : name
+                                                                              , protocol  : protocol
+                                                                              , model     : model
+                                                                          }), callback);
+};
+
+TelldusAPI.prototype.setDeviceLearn = function(device, callback) {
+  return this.roundtrip('PUT', '/device/learn?' + querystring.stringify({ id: device.id }), callback);
+};
+
+TelldusAPI.prototype.setDeviceModel = function(device, model, callback) {
+  return this.roundtrip('PUT', '/device/setModel?' + querystring.stringify(   { id        : device.id
+                                                                              , model     : model }), callback);
+};
+
+TelldusAPI.prototype.setDeviceName = function(device, name, callback) {
+  return this.roundtrip('PUT', '/device/setName?' + querystring.stringify(    { id        : device.id
+                                                                              , name      : name }), callback);
+};
+
+TelldusAPI.prototype.setDeviceParameter = function(device, parameter, value, callback) {
+  return this.roundtrip('PUT', '/device/setProtocol?' + querystring.stringify({ id        : device.id
+                                                                              , parameter : parameter
+                                                                              , value     : value }), callback);
+};
+
+TelldusAPI.prototype.setDeviceProtocol = function(device, protocol, callback) {
+  return this.roundtrip('PUT', '/device/setProtocol?' + querystring.stringify({ id        : device.id
+                                                                              , protocol  : protocol }), callback);
+};
+
+TelldusAPI.prototype.removeDevice = function(device, callback) {
+  return this.roundtrip('DELETE', '/device/remove?' + querystring.stringify(  { id        : device.id }), callback);
+};
+
+
+TelldusAPI.prototype.bellDevice = function(device, callback) {
+  return this.roundtrip('PUT', '/device/bell?' + querystring.stringify(       { id        : device.id }), callback);
+};
+
+TelldusAPI.prototype.commandDevice = function(device, method, value, callback) {
+  return this.roundtrip('PUT', '/device/command?' + querystring.stringify(    { id        : device.id
+                                                                              , method    : method
+                                                                              , value     : value }), callback);
+};
+
+TelldusAPI.prototype.dimDevice = function(device, level, callback) {
+  return this.roundtrip('PUT', '/device/dim?' + querystring.stringify(        { id        : device.id 
+                                                                              , level     : level }), callback);
+};
+
+TelldusAPI.prototype.onOffDevice = function(device, onP, callback) {
+  return this.roundtrip('PUT', '/device/turn' + (onP ? 'On' : 'Off') + '?'
+                                                      + querystring.stringify({ id        : device.id }), callback);
+};
+
+TelldusAPI.prototype.stopDevice = function(device, callback) {
+  return this.roundtrip('PUT', '/device/stop?' + querystring.stringify(       { id        : device.id }), callback);
+};
+
+TelldusAPI.prototype.upDownDevice = function(device, upP, callback) {
+  return this.roundtrip('PUT', '/device/' + (upP ? 'up' : 'down') + '?'
+                                                      + querystring.stringify({ id        : device.id }), callback);
 };
 
 
