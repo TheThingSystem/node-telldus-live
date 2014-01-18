@@ -1,4 +1,4 @@
-// telldus-live.js
+// a node.js module to interface with the Telldus Live API
 //   cf., http://api.telldus.com
 
 var events      = require('events')
