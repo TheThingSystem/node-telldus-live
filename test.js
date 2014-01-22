@@ -1,9 +1,10 @@
 var TelldusAPI = require('./telldus-live');
+var secrets  = require('./secrets').MySecrets;
 
-var publicKey   = '...'
-  , privateKey  = '...'
-  , token       = '...'
-  , tokenSecret = '...'
+var publicKey   = secrets.publicKey?secrets.publicKey:'...'
+  , privateKey  = secrets.privateKey?secrets.privateKey:'...'
+  , token       = secrets.token?secrets.token:'...'
+  , tokenSecret = secrets.tokenSecret?secrets.tokenSecret:'...'
   , cloud
   ;
 
@@ -58,17 +59,18 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
 
         console.log('device #' + offset + ' ' + s + ': '); console.log(device);
         type = null;
-        d = device.protocol.split(':');
-        type = { 'selflearning-switch' : 'dimmer'
-               , codeswitch            : 'onoff' }[d[0]];
+        d = device.model.split(':');
+        type = { 'selflearning-switch' : 'onoff'
+               , 'selflearning-dimmer' : 'dimmer'
+               , 'codeswitch'          : 'onoff' }[d[0]];
         if (!type) return;
-        console.log('/device/climate' + (d[d.length - 1] || 'telldus') + '/' + (type || 'generic'));
+        console.log('/device/climate' + '/' + (d[d.length - 1] || 'telldus') + '/' + (type || 'generic'));
         console.log('    uuid=teldus:' + device.id);
         console.log('    perform: off, on');
         console.log('    name: ' + device.name);
         console.log('    status: ' + (device.online === '1' ? 'present' : 'absent'));
         console.log('    info:');
-        if (type === 'dimmer') console.log('      dimmer: percentage');
+        if (type === 'dimmer') console.log('      dimmer: ' + Math.round((1-(255 - device.statevalue)/255)*100) + '%');
         console.log('');
       };
     };
