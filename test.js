@@ -21,30 +21,41 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
 
     f = function(offset, p, s) {
       return function(err, sensor) {
-        var d, prop, type;
+        var i, prop, props, type;
 
         if (!!err) return console.log(s + ' id=' + p.id + ': ' + err.message);
 
         console.log('sensor #' + offset + ' ' + s + ': '); console.log(sensor);
+        props =  { temp     : [ 'temperature', 'celcius',    'meteo' ]
+                 , humidity : [ 'humidity',    'percentage', 'meteo' ]
+                 };      
+
         type = null;
-        for (d in sensor.data) if (sensor.data.hasOwnProperty(d)) {
-          if ((d.name === 'temp') || (d.name === 'humidity')) type = 'meteo';
+        for (i = 0; i < sensor.data.length; i++) {
+          type = props[sensor.data[i].name];
+          if (!!type) break;
         }
-        console.log('/device/climate' + (sensor.protocol || 'telldus') + '/' + (type || 'generic'));
+        if (!type) return;
+
+        console.log('/device/climate' + (sensor.protocol || 'telldus') + '/' + type[2]);
         console.log('    uuid=teldus:' + sensor.id);
         console.log('    name: ' + sensor.name);
         console.log('    status: ' + (p.online === '1' ? 'present' : 'absent'));
         console.log('    lastSample: ' + sensor.lastUpdated * 1000);
         console.log('    info:');
-        for (d in sensor.data) if (sensor.data.hasOwnProperty(d)) {
-          prop = { temp : 'temperature' }[d.name] || d.name;
-          console.log('      ' + prop + ': ' + d.value);
+        for (i = 0; i < sensor.data.length; i++) {
+          prop =  props[sensor.data[i].name];
+          if (prop) console.log('      ' + prop[0] + ': "' + prop[1] + '"');
+        }
+        console.log('    values:');
+        for (i = 0; i < sensor.data.length; i++) {
+          prop =  props[sensor.data[i].name];
+          if (prop) console.log('      ' + prop[0] + ': ' + sensor.data[i].value);
         }
         console.log('');
       };
     };
 
-    console.log('sensors: '); console.log(sensors); console.log(''); console.log('');
     for (i = 0; i < sensors.length; i++) cloud.getSensorInfo(sensors[i], f(i, sensors[i], 'getSensorInfo'));
   }).getDevices(function(err, devices) {
     var f, i;
@@ -53,29 +64,33 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
 
     f = function(offset, p, s) {
       return function(err, device) {
-        var d, type;
+        var d, type, types;
 
         if (!!err) return console.log(s + ' id=' + p.id + ': ' + err.message);
 
         console.log('device #' + offset + ' ' + s + ': '); console.log(device);
+        types = { 'selflearning-switch' : 'onoff'
+                , 'selflearning-dimmer' : 'dimmer'
+                , 'codeswitch'          : 'onoff' };
+
         type = null;
         d = device.model.split(':');
-        type = { 'selflearning-switch' : 'onoff'
-               , 'selflearning-dimmer' : 'dimmer'
-               , 'codeswitch'          : 'onoff' }[d[0]];
+        type = types[d[0]];
         if (!type) return;
-        console.log('/device/climate' + '/' + (d[d.length - 1] || 'telldus') + '/' + (type || 'generic'));
+
+        console.log('/device/climate' + '/' + (d[d.length - 1] || 'telldus') + '/' + type);
         console.log('    uuid=teldus:' + device.id);
         console.log('    perform: off, on');
         console.log('    name: ' + device.name);
-        console.log('    status: ' + (device.online === '1' ? 'present' : 'absent'));
+        console.log('    status: ' + (device.online === '0' ? 'absent' : (device.statevalue > 0 ? 'on' : 'off')));
         console.log('    info:');
+        if (type === 'dimmer') console.log('      dimmer: percentage');
+        console.log('    values:');
         if (type === 'dimmer') console.log('      dimmer: ' + Math.round((1-(255 - device.statevalue)/255)*100) + '%');
         console.log('');
       };
     };
 
-    console.log('devices: '); console.log(devices); console.log(''); console.log('');
     for (i = 0; i < devices.length; i++) {
       if (devices[i].type === 'device') cloud.getDeviceInfo(devices[i], f(i, devices[i], 'getDeviceInfo'));
     }
