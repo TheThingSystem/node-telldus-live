@@ -1,5 +1,5 @@
 {
-  "name"           : "node-telldus-live"
+  "name"           : "telldus-live"
 , "version"        : "0.0.4"
 , "description"    : "A node.js module to interface with Telldus Live API"
 , "author"         : {
