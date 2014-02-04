@@ -17,14 +17,14 @@ You will need a Telldus Live account and OAuth tokens:
 Install
 -------
 
-    npm install node-telldus-live
+    npm install telldus-live
 
 API
 ---
 
 ### Load
 
-    var TelldusAPI = require('node-telldus-live');
+    var TelldusAPI = require('telldus-live');
 
 ### Login to cloud
 
