@@ -1,6 +1,6 @@
 {
   "name"           : "telldus-live"
-, "version"        : "0.0.4"
+, "version"        : "0.0.5"
 , "description"    : "A node.js module to interface with Telldus Live API"
 , "author"         : {
     "name"         : "Marshall Rose"
@@ -15,6 +15,7 @@
   }
 , "dependencies"   : {
     "oauth"        : "~0.9.11"
+  , "underscore"   : "1.5.1"
   }
 , "keywords"       : [ "Telldus" ]
 , "main"           : "./telldus-live.js"

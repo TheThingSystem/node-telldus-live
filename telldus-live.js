@@ -4,6 +4,7 @@
 var events      = require('events')
   , oauth       = require('oauth')
   , querystring = require('querystring')
+  , underscore  = require('underscore')
   , util        = require('util')
   ;
 
@@ -71,17 +72,42 @@ TelldusAPI.prototype.setSensorName = function(sensor, name, callback) {
 };
 
 
+exports.commands = { on   : 0x0001
+                   , off  : 0x0002
+                   , bell : 0x0004
+                   , dim  : 0x0010
+                   , up   : 0x0080
+                   , down : 0x0100
+                   };
+var methods          = underscore.invert(exports.commands)
+  , supportedMethods = underscore.reduce(exports.commands, function(memo, num) { return memo + num; }, 0);
+
+for (var supported in methods) if (methods.hasOwnProperty(supported)) supportedMethods = methods[supported];
+
 TelldusAPI.prototype.getDevices = function(callback) {
-  return this.roundtrip('GET', '/devices/list', function(err, results) {
+  return this.roundtrip('GET', '/devices/list?' + querystring.stringify({ supportedMethods: supportedMethods }),
+                        function(err, results) {
+    var device, i;
+
     if (!!err) return callback(err);
 
     if (!util.isArray(results.device)) return callback(new Error('non-array returned: ' + JSON.stringify(results)));
-    return callback(null, results.device);
+    for (i = 0; i < results.device.length; i++) {
+      device = results.device[i];
+      device.status = methods[device.state] || 'off';
+    }
+    callback(null, results.device);
   });
 };
 
 TelldusAPI.prototype.getDeviceInfo = function(device, callback) {
-  return this.roundtrip('GET', '/device/info?' + querystring.stringify(       { id        : device.id }), callback);
+  return this.roundtrip('GET', '/device/info?' + querystring.stringify(       { id        : device.id }),
+                        function(err, results) {
+    if (!!err) return callback(err);
+
+    results.status = methods[results.state] || 'off';
+    callback(null, results);
+  });
 };
 
 
@@ -128,8 +154,10 @@ TelldusAPI.prototype.bellDevice = function(device, callback) {
 };
 
 TelldusAPI.prototype.commandDevice = function(device, method, value, callback) {
+  if (!exports.commands[method]) return callback(new Error('unknown method: ' + method));
+
   return this.roundtrip('PUT', '/device/command?' + querystring.stringify(    { id        : device.id
-                                                                              , method    : method
+                                                                              , method    : exports.commands[method]
                                                                               , value     : value }), callback);
 };
 

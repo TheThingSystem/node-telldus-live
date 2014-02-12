@@ -82,7 +82,7 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
         console.log('    uuid=teldus:' + device.id);
         console.log('    perform: off, on');
         console.log('    name: ' + device.name);
-        console.log('    status: ' + (device.online === '0' ? 'absent' : (device.statevalue > 0 ? 'on' : 'off')));
+        console.log('    status: ' + (device.online === '0' ? 'absent' : device.status));
         console.log('    info:');
         if (type === 'dimmer') console.log('      dimmer: percentage');
         console.log('    values:');
