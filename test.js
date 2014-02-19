@@ -37,7 +37,7 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
         }
         if (!type) return;
 
-        console.log('/device/climate' + (sensor.protocol || 'telldus') + '/' + type[2]);
+        console.log('/device/climate/' + (sensor.protocol || 'telldus') + '/' + type[2]);
         console.log('    uuid=teldus:' + sensor.id);
         console.log('    name: ' + sensor.name);
         console.log('    status: ' + (p.online === '1' ? 'present' : 'absent'));
@@ -78,7 +78,7 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
         type = types[d[0]];
         if (!type) return;
 
-        console.log('/device/climate' + '/' + (d[d.length - 1] || 'telldus') + '/' + type);
+        console.log('/device/switch' + '/' + (d[d.length - 1] || 'telldus') + '/' + type);
         console.log('    uuid=teldus:' + device.id);
         console.log('    perform: off, on');
         console.log('    name: ' + device.name);
