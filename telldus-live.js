@@ -82,7 +82,7 @@ exports.commands = { on   : 0x0001
 var methods          = underscore.invert(exports.commands)
   , supportedMethods = underscore.reduce(exports.commands, function(memo, num) { return memo + num; }, 0);
 
-for (var supported in methods) if (methods.hasOwnProperty(supported)) supportedMethods = methods[supported];
+//for (var supported in methods) if (methods.hasOwnProperty(supported)) supportedMethods = methods[supported];
 
 TelldusAPI.prototype.getDevices = function(callback) {
   return this.roundtrip('GET', '/devices/list?' + querystring.stringify({ supportedMethods: supportedMethods }),
@@ -94,6 +94,7 @@ TelldusAPI.prototype.getDevices = function(callback) {
     if (!util.isArray(results.device)) return callback(new Error('non-array returned: ' + JSON.stringify(results)));
     for (i = 0; i < results.device.length; i++) {
       device = results.device[i];
+ //     console.error('getDevices: ' + device.name + ' ' + methods[device.state] + '\n');
       device.status = methods[device.state] || 'off';
     }
     callback(null, results.device);
@@ -101,10 +102,11 @@ TelldusAPI.prototype.getDevices = function(callback) {
 };
 
 TelldusAPI.prototype.getDeviceInfo = function(device, callback) {
-  return this.roundtrip('GET', '/device/info?' + querystring.stringify(       { id        : device.id }),
+  return this.roundtrip('GET', '/device/info?' + querystring.stringify({ supportedMethods: supportedMethods }) + '&' + querystring.stringify(       { id        : device.id }),
                         function(err, results) {
     if (!!err) return callback(err);
 
+//    console.error('getDeviceInfo: ' + results.name + ' ' + methods[results.state] + '\n');
     results.status = methods[results.state] || 'off';
     callback(null, results);
   });
