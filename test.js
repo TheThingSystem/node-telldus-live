@@ -28,7 +28,7 @@ cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
         console.log('sensor #' + offset + ' ' + s + ': '); console.log(sensor);
         props =  { temp     : [ 'temperature', 'celcius',    'meteo' ]
                  , humidity : [ 'humidity',    'percentage', 'meteo' ]
-                 };      
+                 };
 
         type = null;
         for (i = 0; i < sensor.data.length; i++) {

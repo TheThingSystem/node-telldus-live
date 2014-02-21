@@ -1,6 +1,6 @@
 {
   "name"           : "telldus-live"
-, "version"        : "0.0.5"
+, "version"        : "0.1.0"
 , "description"    : "A node.js module to interface with Telldus Live API"
 , "author"         : {
     "name"         : "Marshall Rose"

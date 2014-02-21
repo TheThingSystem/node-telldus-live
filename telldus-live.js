@@ -82,8 +82,6 @@ exports.commands = { on   : 0x0001
 var methods          = underscore.invert(exports.commands)
   , supportedMethods = underscore.reduce(exports.commands, function(memo, num) { return memo + num; }, 0);
 
-//for (var supported in methods) if (methods.hasOwnProperty(supported)) supportedMethods = methods[supported];
-
 TelldusAPI.prototype.getDevices = function(callback) {
   return this.roundtrip('GET', '/devices/list?' + querystring.stringify({ supportedMethods: supportedMethods }),
                         function(err, results) {
@@ -94,7 +92,6 @@ TelldusAPI.prototype.getDevices = function(callback) {
     if (!util.isArray(results.device)) return callback(new Error('non-array returned: ' + JSON.stringify(results)));
     for (i = 0; i < results.device.length; i++) {
       device = results.device[i];
- //     console.error('getDevices: ' + device.name + ' ' + methods[device.state] + '\n');
       device.status = methods[device.state] || 'off';
     }
     callback(null, results.device);
@@ -102,11 +99,10 @@ TelldusAPI.prototype.getDevices = function(callback) {
 };
 
 TelldusAPI.prototype.getDeviceInfo = function(device, callback) {
-  return this.roundtrip('GET', '/device/info?' + querystring.stringify({ supportedMethods: supportedMethods }) + '&' + querystring.stringify(       { id        : device.id }),
+  return this.roundtrip('GET', '/device/info?' + querystring.stringify({ id: device.id, supportedMethods: supportedMethods}),
                         function(err, results) {
     if (!!err) return callback(err);
 
-//    console.error('getDeviceInfo: ' + results.name + ' ' + methods[results.state] + '\n');
     results.status = methods[results.state] || 'off';
     callback(null, results);
   });
@@ -164,7 +160,7 @@ TelldusAPI.prototype.commandDevice = function(device, method, value, callback) {
 };
 
 TelldusAPI.prototype.dimDevice = function(device, level, callback) {
-  return this.roundtrip('PUT', '/device/dim?' + querystring.stringify(        { id        : device.id 
+  return this.roundtrip('PUT', '/device/dim?' + querystring.stringify(        { id        : device.id
                                                                               , level     : level }), callback);
 };
 
@@ -209,9 +205,8 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
     };
   }
 
-// my guess is that this isn't REST, hence:
+// NB: not REST
   method = 'GET';
-
   self.oauth._performSecureRequest(self.token, self.tokenSecret, method, 'https://api.telldus.com/json' + path, null, json,
                                    !!json ? 'application/json' : null, function(err, body, response) {
       var expected = { GET    : [ 200 ]
