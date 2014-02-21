@@ -1,8 +1,6 @@
 node-telldus-live
 =================
 
-**NB: this module is not completed yet. soon, very soon!**
-
 A node.js module to interface with the [Telldus Live API](http://api.telldus.com).
 
 Before Starting

@@ -99,8 +99,9 @@ TelldusAPI.prototype.getDevices = function(callback) {
 };
 
 TelldusAPI.prototype.getDeviceInfo = function(device, callback) {
-  return this.roundtrip('GET', '/device/info?' + querystring.stringify({ id: device.id, supportedMethods: supportedMethods}),
-                        function(err, results) {
+  return this.roundtrip('GET', '/device/info?' + querystring.stringify(       { id               : device.id
+                                                                              , supportedMethods : supportedMethods
+                                                                              }), function(err, results) {
     if (!!err) return callback(err);
 
     results.status = methods[results.state] || 'off';
