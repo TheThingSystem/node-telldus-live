@@ -26,10 +26,10 @@ API
 
 ### Login to cloud
 
-    var clientID     = '...'
-      , clientSecret = '...'
-      , userName     = '...'
-      , passPhrase   = '...'
+    var publicKey    = '...'
+      , privateKey   = '...'
+      , token        = '...'
+      , tokenSecret  = '...'
       , cloud
       ;
 
