@@ -121,7 +121,7 @@ API
 
 ### Modify sensor
 
-    cloud.setSensorName(sensor, name, function(err, reuslt) {
+    cloud.setSensorName(sensor, name, function(err, result) {
     });
 
 
