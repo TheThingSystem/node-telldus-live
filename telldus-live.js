@@ -52,6 +52,14 @@ TelldusAPI.prototype.login = function(token, tokenSecret, callback) {
   return self;
 };
 
+TelldusAPI.prototype.getClients = function(callback) {
+  return this.roundtrip('GET', '/clients/list', function(err, results) {
+    if (!!err) return callback(err);
+    
+    if (!util.isArray(results.client)) return callback(new Error('non-array returned: ' + JSON.stringify(results)));
+    return callback(null, results.client);
+  });
+};
 
 TelldusAPI.prototype.getSensors = function(callback) {
   return this.roundtrip('GET', '/sensors/list', function(err, results) {
