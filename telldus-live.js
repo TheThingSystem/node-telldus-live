@@ -61,6 +61,10 @@ TelldusAPI.prototype.getClients = function(callback) {
   });
 };
 
+TelldusAPI.prototype.getClientInfo = function(client, callback) {
+  return this.roundtrip('GET', '/client/info?' + querystring.stringify({ id: client.id }), callback);
+};
+
 TelldusAPI.prototype.getSensors = function(callback) {
   return this.roundtrip('GET', '/sensors/list', function(err, results) {
     if (!!err) return callback(err);
@@ -208,6 +212,7 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
     callback = json;
     json = null;
   }
+  
   if (!callback) {
     callback = function(err, results) {
       if (!!err) self.logger.error('invoke', { exception: err }); else self.logger.info(path, { results: results });
@@ -215,7 +220,7 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
   }
 
 // NB: not REST
-  method = 'GET';
+  //method = 'GET';
   self.oauth._performSecureRequest(self.token, self.tokenSecret, method, 'https://api.telldus.com/json' + path, null, json,
                                    !!json ? 'application/json' : null, function(err, body, response) {
       var expected = { GET    : [ 200 ]
