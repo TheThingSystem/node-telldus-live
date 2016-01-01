@@ -220,7 +220,7 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
   }
 
 // NB: not REST
-  //method = 'GET';
+  method = 'GET';
   self.oauth._performSecureRequest(self.token, self.tokenSecret, method, 'https://api.telldus.com/json' + path, null, json,
                                    !!json ? 'application/json' : null, function(err, body, response) {
       var expected = { GET    : [ 200 ]
