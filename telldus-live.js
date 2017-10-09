@@ -218,7 +218,7 @@ TelldusAPI.prototype.invoke = function(method, path, json, callback) {
 
       var results = {};
 
-      if (!!err) return callback(err, response.statusCode);
+      if (!!err) return callback(err, response);
 
       try { results = JSON.parse(body); } catch(ex) {
         self.logger.error(path, { event: 'json', diagnostic: ex.message, body: body });
