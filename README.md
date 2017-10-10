@@ -43,6 +43,21 @@ API
       console.log('background error: ' + err.message);
     });
 
+### Get client information
+
+    cloud.getClients(function(err, clients) {
+      if (!!err) return console.log('getClients: ' + err.message);
+
+      // inspect clients[{}]
+    });
+
+    cloud.getClientInfo(client, function(err, client) {
+      if (!!err) return console.log('getClientInfo: ' + err.message);
+
+      // inspect device{}
+    });
+
+
 ### Get device information
 
     cloud.getDevices(function(err, devices) {
@@ -52,7 +67,7 @@ API
     });
 
     cloud.getDeviceInfo(device, function(err, device) {
-      if (!!err) return console.log('getDevice: ' + err.message);
+      if (!!err) return console.log('getDeviceInfo: ' + err.message);
 
       // inspect device{}
     });
