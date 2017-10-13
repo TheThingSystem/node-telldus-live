@@ -53,8 +53,12 @@ TelldusAPI.prototype.login = function(token, tokenSecret, callback) {
 };
 
 
-TelldusAPI.prototype.getSensors = function(callback) {
-  return this.roundtrip('GET', '/sensors/list', function(err, results) {
+TelldusAPI.prototype.getSensors = function(params, callback) {
+  if ((!callback) && (typeof params === 'function')) {
+    callback = params;
+    params = null;
+  }
+  return this.roundtrip('GET', '/sensors/list?' + querystring.stringify(params), function(err, results) {
     if (!!err) return callback(err);
 
     if (!util.isArray(results.sensor)) return callback(new Error('non-array returned: ' + JSON.stringify(results)));
@@ -71,6 +75,11 @@ TelldusAPI.prototype.setSensorName = function(sensor, name, callback) {
                                                                               , name      : name }), callback);
 };
 
+TelldusAPI.prototype.setSensorIgnore = function(sensor, ignore, callback) {
+  return this.roundtrip('PUT', '/sensor/setIgnore?' + querystring.stringify(    { id        : sensor.id
+                                                                              , ignore      : ignore }), callback);
+  
+};
 
 exports.commands = { on   : 0x0001
                    , off  : 0x0002
