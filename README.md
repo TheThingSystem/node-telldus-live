@@ -34,7 +34,7 @@ API
       ;
 
     cloud = new TelldusAPI.TelldusAPI({ publicKey  : publicKey
-                                      , privateKey : privateKey }).login(function(token, tokenSecret, function(err, user)) {
+                                      , privateKey : privateKey }).login(token, tokenSecret, function(err, user) {
       if (!!err) return console.log('login error: ' + err.message);
 
       // otherwise, good to go!
@@ -107,7 +107,7 @@ API
 
 ### Get sensor information
 
-    cloud.getSensors(function(err, sensors) {
+    cloud.getSensors(/*optional paramsObject{}, */function(err, sensors) {
       if (!!err) return console.log('getSensors: ' + err.message);
 
       // inspect sensors[{}]
@@ -122,6 +122,9 @@ API
 ### Modify sensor
 
     cloud.setSensorName(sensor, name, function(err, result) {
+    });
+
+    cloud.setSensorIgnore(sensor, ignore, function(err, result) {
     });
 
 
