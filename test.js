@@ -1,3 +1,5 @@
+/* jshint asi: true, node: true, laxbreak: true, laxcomma: true, undef: true, unused: true */
+
 var TelldusAPI = require('./telldus-live');
 var secrets  = require('./secrets').MySecrets;
 

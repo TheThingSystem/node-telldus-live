@@ -1,3 +1,5 @@
+/* jshint asi: true, node: true, laxbreak: true, laxcomma: true, undef: true, unused: true */
+
 // a node.js module to interface with the Telldus Live API
 //   cf., http://api.telldus.com
 
