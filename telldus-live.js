@@ -72,6 +72,10 @@ TelldusAPI.prototype.getSensorInfo = function(sensor, callback) {
   return this.roundtrip('GET', '/sensor/info?' + querystring.stringify(       { id        : sensor.id }), callback);
 };
 
+TelldusAPI.prototype.getSensorHistory = function(sensor, from=null, to=null, callback) {
+  return this.roundtrip('GET', '/sensor/history?' + querystring.stringify(       { id        : sensor.id, from: from, to: to  }) + "&includeHumanReadableDate=1", callback);
+};
+
 TelldusAPI.prototype.setSensorName = function(sensor, name, callback) {
   return this.roundtrip('PUT', '/sensor/setName?' + querystring.stringify(    { id        : sensor.id
                                                                               , name      : name }), callback);
